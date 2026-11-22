@@ -1,106 +1,266 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CONVERSOR DE DIVISA FENACOTECV-1942</title>
-  <meta property="og:title" content="CONVERSOR DE DIVISA FENACOTECV-1942" />
-  <meta property="og:description" content="Calculadora de tasa oficial BCV" />
-  <meta property="og:image" content="https://plardgg.github.io/conversor-bcv/84-3d.jpeg" />
-  <meta property="og:url" content="https://plardgg.github.io/conversor-bcv/" />
-  <meta property="og:type" content="website" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Conversor FENACOTECV-1942</title>
+  <meta property="og:title" content="Conversor FENACOTECV-1942">
   <style>
+    :root {
+      --bg: #f4f5f7;
+      --card: #ffffff;
+      --text: #111318;
+      --muted: #555b66;
+      --accent: #b40000;
+      --accent-dark: #8e0000;
+      --navy: #14284b;
+      --border: #dcdfe6;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
     body {
-      font-family: Arial, Helvetica, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
     }
-    .estado {
-      margin-top: 8px;
-      font-size: 0.9rem;
-    }
-    #copiaManual {
-      display: none;
+
+    .tarjeta {
       width: 100%;
-      margin-top: 8px;
+      max-width: 460px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-top: 4px solid var(--accent);
+      border-radius: 10px;
+      padding: 26px 24px;
+      box-shadow: 0 8px 24px rgba(17, 19, 24, 0.08);
+    }
+
+    .encabezado {
+      margin-bottom: 20px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 14px;
+    }
+
+    .subtitulo {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--navy);
+      margin-bottom: 6px;
+    }
+
+    h1 {
+      font-size: 20px;
+      line-height: 1.25;
+      font-weight: 800;
+      color: var(--text);
+    }
+
+    .campos {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    @media (max-width: 460px) {
+      .campos {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .grupo label {
+      display: block;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 6px;
+    }
+
+    .grupo input {
+      width: 100%;
+      padding: 11px 12px;
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text);
+      background: #ffffff;
+      border: 1px solid #c5cbd6;
+      border-radius: 6px;
+      outline: none;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .grupo input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(180, 0, 0, 0.12);
+    }
+
+    .resultado-box {
+      background: #fafafa;
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--navy);
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 18px;
+    }
+
+    .monto-bs {
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+
+    .detalle-ref {
+      font-size: 13px;
+      color: var(--muted);
+      font-weight: 500;
+    }
+
+    .btn-wa {
+      width: 100%;
+      padding: 12px 16px;
+      font-size: 15px;
+      font-weight: 700;
+      color: #ffffff;
+      background-color: var(--accent);
+      border: none;
+      border-radius: 7px;
+      cursor: pointer;
+      transition: background-color 0.15s ease;
+    }
+
+    .btn-wa:hover {
+      background-color: var(--accent-dark);
+    }
+
+    .estado {
+      margin-top: 10px;
+      min-height: 18px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--navy);
+      text-align: center;
     }
   </style>
 </head>
 <body>
-  <div>
-    <h1>CONVERSOR DE DIVISA FENACOTECV-1942</h1>
-    <input id="monto" type="text" placeholder="Monto" />
-    <input id="tasa" type="text" placeholder="Tasa BCV" />
-    <div id="totalBs">Bs. 0,00</div>
-    <div id="lineaCalc">Ref.: 0,00 × Tasa: 0,0000</div>
-    <button id="btnCopiar" type="button">Copiar WhatsApp</button>
-    <div class="estado" id="estado"></div>
-    <textarea id="copiaManual" readonly></textarea>
-  </div>
+  <main class="tarjeta">
+    <header class="encabezado">
+      <div class="subtitulo">Calculadora de Referencia</div>
+      <h1>CONVERSOR DE DIVISA FENACOTECV-1942</h1>
+    </header>
+
+    <section class="campos">
+      <div class="grupo">
+        <label for="monto">Monto</label>
+        <input id="monto" type="text" inputmode="decimal" placeholder="0,00" autocomplete="off">
+      </div>
+      <div class="grupo">
+        <label for="tasa">Tasa BCV</label>
+        <input id="tasa" type="text" inputmode="decimal" placeholder="0,0000" autocomplete="off">
+      </div>
+    </section>
+
+    <section class="resultado-box" aria-live="polite">
+      <div id="salidaBs" class="monto-bs">Bs. 0,00</div>
+      <div id="salidaRef" class="detalle-ref">Ref.: 0,00 × Tasa: 0,0000</div>
+    </section>
+
+    <button id="btnCopiar" type="button" class="btn-wa">Copiar WhatsApp</button>
+    <div id="estado" class="estado"></div>
+  </main>
 
   <script>
-    function numVE(v) {
-      if (!v) return 0;
-      var s = String(v).trim().replace(/\s+/g, "");
-      if (s.indexOf(",") !== -1 && s.indexOf(".") !== -1) {
-        s = s.replace(/\./g, "").replace(",", ".");
-      } else if (s.indexOf(",") !== -1) {
-        s = s.replace(",", ".");
-      }
-      var n = parseFloat(s);
-      return isNaN(n) ? 0 : n;
+    const inputMonto = document.getElementById("monto");
+    const inputTasa = document.getElementById("tasa");
+    const salidaBs = document.getElementById("salidaBs");
+    const salidaRef = document.getElementById("salidaRef");
+    const btnCopiar = document.getElementById("btnCopiar");
+    const estado = document.getElementById("estado");
+
+    const CLAVE_TASA = "fenacotecv_1942_tasa_bcv";
+
+    function parsearNumero(valor) {
+      if (!valor) return 0;
+      const limpio = String(valor).trim().replace(/\s+/g, "").replace(",", ".");
+      const num = parseFloat(limpio);
+      return Number.isFinite(num) ? num : 0;
     }
 
-    function fmtVE(n, dec) {
-      if (typeof dec !== "number") dec = 2;
-      var parts = n.toFixed(dec).split(".");
-      var ent = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-      return dec > 0 ? ent + "," + (parts[1] || "") : ent;
+    function formatoVe(num, decimales) {
+      return num.toLocaleString("es-VE", {
+        minimumFractionDigits: decimales,
+        maximumFractionDigits: decimales
+      });
     }
 
     function actualizar() {
-      var m = numVE(document.getElementById("monto").value);
-      var t = numVE(document.getElementById("tasa").value);
-      var tot = m * t;
-      document.getElementById("totalBs").textContent = "Bs. " + fmtVE(tot, 2);
-      document.getElementById("lineaCalc").textContent = "Ref.: " + fmtVE(m, 2) + " × Tasa: " + fmtVE(t, 4);
-      document.getElementById("estado").textContent = "";
-    }
+      const monto = parsearNumero(inputMonto.value);
+      const tasa = parsearNumero(inputTasa.value);
+      const totalBs = monto * tasa;
 
-    function copiarWA() {
-      var m = numVE(document.getElementById("monto").value);
-      var t = numVE(document.getElementById("tasa").value);
-      var tot = fmtVE(m * t, 2);
-      var msg = "*Conversión BCV*\n• *Monto ref.:* " + fmtVE(m, 2) + "\n• *Tasa:* " + fmtVE(t, 4) + "\n• *Total:* Bs. " + tot;
-
-      var caja = document.getElementById("copiaManual");
-      var est = document.getElementById("estado");
-      caja.value = msg;
-      caja.style.display = "block";
-      caja.focus();
-      caja.select();
+      salidaBs.textContent = "Bs. " + formatoVe(totalBs, 2);
+      salidaRef.textContent =
+        "Ref.: " + formatoVe(monto, 2) + " × Tasa: " + formatoVe(tasa, 4);
 
       try {
-        if (document.execCommand("copy")) {
-          est.textContent = "Copiado al portapapeles.";
-          return;
-        }
+        localStorage.setItem(CLAVE_TASA, inputTasa.value);
       } catch (e) {}
-
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(msg).then(function() {
-          est.textContent = "Copiado al portapapeles.";
-        }, function() {
-          est.textContent = "Listo para Ctrl + C abajo.";
-        });
-      } else {
-        est.textContent = "Listo para Ctrl + C abajo.";
-      }
     }
 
-    ["input", "change", "keyup"].forEach(function(ev) {
-      document.getElementById("monto").addEventListener(ev, actualizar);
-      document.getElementById("tasa").addEventListener(ev, actualizar);
+    function textoWhatsApp() {
+      const monto = parsearNumero(inputMonto.value);
+      const tasa = parsearNumero(inputTasa.value);
+      const totalBs = monto * tasa;
+      return (
+        "*CONVERSOR DE DIVISA FENACOTECV-1942*\n" +
+        "Ref.: " + formatoVe(monto, 2) + "\n" +
+        "Tasa BCV: " + formatoVe(tasa, 4) + "\n" +
+        "Total: *Bs. " + formatoVe(totalBs, 2) + "*"
+      );
+    }
+
+    btnCopiar.addEventListener("click", async () => {
+      const msg = textoWhatsApp();
+      try {
+        await navigator.clipboard.writeText(msg);
+        estado.textContent = "Copiado para WhatsApp.";
+      } catch (e) {
+        const aux = document.createElement("textarea");
+        aux.value = msg;
+        document.body.appendChild(aux);
+        aux.select();
+        document.execCommand("copy");
+        document.body.removeChild(aux);
+        estado.textContent = "Copiado para WhatsApp.";
+      }
+      setTimeout(() => {
+        estado.textContent = "";
+      }, 2500);
     });
-    document.getElementById("btnCopiar").addEventListener("click", copiarWA);
+
+    inputMonto.addEventListener("input", actualizar);
+    inputTasa.addEventListener("input", actualizar);
+
+    try {
+      const guardada = localStorage.getItem(CLAVE_TASA);
+      if (guardada) {
+        inputTasa.value = guardada;
+      }
+    } catch (e) {}
+
     actualizar();
   </script>
 </body>
