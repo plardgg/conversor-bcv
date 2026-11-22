@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Conversor FENACOTECV-1942</title>
-  <meta property="og:title" content="Conversor FENACOTECV-1942">
+  <title>CONVERSOR DE DIVISA FENACOTECV-1942</title>
+  <meta property="og:title" content="CONVERSOR DE DIVISA FENACOTECV-1942">
   <style>
     :root {
       --bg: #f4f5f7;
@@ -225,12 +225,7 @@
       const monto = parsearNumero(inputMonto.value);
       const tasa = parsearNumero(inputTasa.value);
       const totalBs = monto * tasa;
-      return (
-        "*CONVERSOR DE DIVISA FENACOTECV-1942*\n" +
-        "Ref.: " + formatoVe(monto, 2) + "\n" +
-        "Tasa BCV: " + formatoVe(tasa, 4) + "\n" +
-        "Total: *Bs. " + formatoVe(totalBs, 2) + "*"
-      );
+      return "Ref.: " + formatoVe(monto, 2) + " -> Bs. " + formatoVe(totalBs, 2);
     }
 
     btnCopiar.addEventListener("click", async () => {
