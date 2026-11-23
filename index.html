@@ -63,15 +63,6 @@
       border-radius: 8px;
     }
 
-    .subtitulo {
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--navy);
-      margin-bottom: 4px;
-    }
-
     h1 {
       font-size: 20px;
       line-height: 1.25;
@@ -207,10 +198,9 @@
     const btnCopiar = document.getElementById("btnCopiar");
     const estado = document.getElementById("estado");
 
-    const TASA_INICIAL = "919,8227";
-    const CLAVE_TASA = "fenacotecv_1942_tasa_bcv";
-    const INTERVALO_BCV_MS = 15 * 60 * 1000;
-    const ESPERA_TRAS_CALCULO_MS = 1800;
+    // Cambia este valor cuando actualices la tasa oficial
+    const TASA_OFICIAL_BCV = "919,8227";
+    const ESPERA_TRAS_CALCULO_MS = 2500;
 
     let usoManualPendiente = false;
     let temporizadorRetorno = null;
@@ -237,19 +227,25 @@
       salidaBs.textContent = "Bs. " + formatoVe(totalBs, 2);
       salidaRef.textContent =
         "Ref.: " + formatoVe(monto, 2) + " × Tasa BCV: " + formatoVe(tasa, 4);
+    }
 
-      try {
-        localStorage.setItem(CLAVE_TASA, inputTasa.value);
-      } catch (e) {}
+    function restaurarTasaOficial() {
+      usoManualPendiente = false;
+      clearTimeout(temporizadorRetorno);
+      if (inputTasa.value !== TASA_OFICIAL_BCV) {
+        inputTasa.value = TASA_OFICIAL_BCV;
+        actualizar();
+        estado.textContent = "Tasa restaurada a BCV oficial (" + TASA_OFICIAL_BCV + ").";
+        setTimeout(() => {
+          estado.textContent = "";
+        }, 2500);
+      }
     }
 
     function programarRetornoABcv() {
       if (!usoManualPendiente) return;
       clearTimeout(temporizadorRetorno);
-      temporizadorRetorno = setTimeout(() => {
-        usoManualPendiente = false;
-        sincronizarTasaBCV(true);
-      }, ESPERA_TRAS_CALCULO_MS);
+      temporizadorRetorno = setTimeout(restaurarTasaOficial, ESPERA_TRAS_CALCULO_MS);
     }
 
     function textoWhatsApp() {
@@ -273,74 +269,15 @@
         document.body.removeChild(aux);
         estado.textContent = "Copiado para WhatsApp.";
       }
-      setTimeout(() => {
-        estado.textContent = "";
-      }, 2500);
 
       if (usoManualPendiente) {
-        clearTimeout(temporizadorRetorno);
-        usoManualPendiente = false;
-        sincronizarTasaBCV(true);
-      }
-    });
-
-    function formatearTasaInput(valorNum) {
-      return Number(valorNum).toFixed(4).replace(".", ",");
-    }
-
-    async function obtenerTasaOficialBCV() {
-      const bust = Date.now();
-      const fuentesOficiales = [
-        async () => {
-          const res = await fetch(`https://ve.dolarapi.com/v1/dolares/oficial?t=${bust}`, { cache: "no-store" });
-          if (!res.ok) throw new Error("Error DolarApi oficial");
-          const data = await res.json();
-          if (data?.fuente && String(data.fuente).toLowerCase() !== "oficial") {
-            throw new Error("Fuente no oficial");
-          }
-          return Number(data.promedio);
-        },
-        async () => {
-          const res = await fetch(`https://pydolarve.org/api/v1/dollar?page=bcv&t=${bust}`, { cache: "no-store" });
-          if (!res.ok) throw new Error("Error PyDolar BCV");
-          const data = await res.json();
-          return Number(data?.monitors?.usd?.price);
-        }
-      ];
-
-      for (const consultar of fuentesOficiales) {
-        try {
-          const tasa = await consultar();
-          if (Number.isFinite(tasa) && tasa > 0) {
-            return tasa;
-          }
-        } catch (err) {}
-      }
-      return null;
-    }
-
-    async function sincronizarTasaBCV(silencioso = true) {
-      const nuevaTasa = await obtenerTasaOficialBCV();
-      if (!nuevaTasa) {
-        if (!silencioso) {
-          estado.textContent = "Sin conexión; se mantiene la tasa actual.";
-          setTimeout(() => {
-            estado.textContent = "";
-          }, 3000);
-        }
-        return;
-      }
-
-      const tasaActual = parsearNumero(inputTasa.value);
-      if (Math.abs(nuevaTasa - tasaActual) >= 0.0001) {
-        inputTasa.value = formatearTasaInput(nuevaTasa);
-        actualizar();
-        estado.textContent = "Tasa oficial BCV actualizada: " + formatoVe(nuevaTasa, 4);
+        setTimeout(restaurarTasaOficial, 1200);
+      } else {
         setTimeout(() => {
           estado.textContent = "";
-        }, 3500);
+        }, 2500);
       }
-    }
+    });
 
     inputMonto.addEventListener("input", () => {
       actualizar();
@@ -353,22 +290,8 @@
       programarRetornoABcv();
     });
 
-    let tasaCargada = "";
-    try {
-      tasaCargada = localStorage.getItem(CLAVE_TASA) || "";
-    } catch (e) {}
-
-    inputTasa.value = tasaCargada.trim() ? tasaCargada : TASA_INICIAL;
+    inputTasa.value = TASA_OFICIAL_BCV;
     actualizar();
-
-    sincronizarTasaBCV(true);
-    setInterval(() => sincronizarTasaBCV(true), INTERVALO_BCV_MS);
-
-    document.addEventListener("visibilitychange", () => {
-      if (document.visibilityState === "visible") {
-        sincronizarTasaBCV(true);
-      }
-    });
   </script>
 </body>
 </html>
