@@ -192,7 +192,7 @@
 
     <section class="resultado-box" aria-live="polite">
       <div id="salidaBs" class="monto-bs">Bs. 0,00</div>
-      <div id="salidaRef" class="detalle-ref">Ref.: 0,00 × Tasa: 919,8227</div>
+      <div id="salidaRef" class="detalle-ref">Ref.: 0,00 × Tasa BCV: 919,8227</div>
     </section>
 
     <button id="btnCopiar" type="button" class="btn-wa">Copiar WhatsApp</button>
@@ -210,7 +210,7 @@
     const TASA_INICIAL = "919,8227";
     const CLAVE_TASA = "fenacotecv_1942_tasa_bcv";
     const INTERVALO_BCV_MS = 15 * 60 * 1000;
-    const ESPERA_TRAS_CALCULO_MS = 1800; // Vuelve a la tasa BCV tras mostrar el resultado
+    const ESPERA_TRAS_CALCULO_MS = 1800;
 
     let usoManualPendiente = false;
     let temporizadorRetorno = null;
@@ -236,7 +236,7 @@
 
       salidaBs.textContent = "Bs. " + formatoVe(totalBs, 2);
       salidaRef.textContent =
-        "Ref.: " + formatoVe(monto, 2) + " × Tasa: " + formatoVe(tasa, 4);
+        "Ref.: " + formatoVe(monto, 2) + " × Tasa BCV: " + formatoVe(tasa, 4);
 
       try {
         localStorage.setItem(CLAVE_TASA, inputTasa.value);
@@ -288,24 +288,27 @@
       return Number(valorNum).toFixed(4).replace(".", ",");
     }
 
-    async function obtenerTasaBCV() {
-      const fuentes = [
+    // Consulta la tasa oficial del BCV (sin promedios de mercado paralelo)
+    async function obtenerTasaOficialBCV() {
+      const fuentesOficiales = [
         async () => {
           const res = await fetch("https://ve.dolarapi.com/v1/dolares/oficial", { cache: "no-store" });
-          if (!res.ok) throw new Error("Error DolarApi");
+          if (!res.ok) throw new Error("Error DolarApi oficial");
           const data = await res.json();
-          return Number(data.promedio ?? data.venta ?? data.compra);
+          if (data?.fuente && String(data.fuente).toLowerCase() !== "oficial") {
+            throw new Error("Fuente no oficial");
+          }
+          return Number(data.promedio);
         },
         async () => {
           const res = await fetch("https://pydolarve.org/api/v1/dollar?page=bcv", { cache: "no-store" });
-          if (!res.ok) throw new Error("Error PyDolar");
+          if (!res.ok) throw new Error("Error PyDolar BCV");
           const data = await res.json();
-          const usd = data?.monitors?.usd;
-          return Number(usd?.price ?? usd?.last_price);
+          return Number(data?.monitors?.usd?.price);
         }
       ];
 
-      for (const consultar of fuentes) {
+      for (const consultar of fuentesOficiales) {
         try {
           const tasa = await consultar();
           if (Number.isFinite(tasa) && tasa > 0) {
@@ -317,7 +320,7 @@
     }
 
     async function sincronizarTasaBCV(silencioso = true) {
-      const nuevaTasa = await obtenerTasaBCV();
+      const nuevaTasa = await obtenerTasaOficialBCV();
       if (!nuevaTasa) {
         if (!silencioso) {
           estado.textContent = "Sin conexión; se mantiene la tasa actual.";
@@ -332,7 +335,7 @@
       if (Math.abs(nuevaTasa - tasaActual) >= 0.0001) {
         inputTasa.value = formatearTasaInput(nuevaTasa);
         actualizar();
-        estado.textContent = "Tasa BCV actualizada: " + formatoVe(nuevaTasa, 4);
+        estado.textContent = "Tasa oficial BCV actualizada: " + formatoVe(nuevaTasa, 4);
         setTimeout(() => {
           estado.textContent = "";
         }, 3500);
