@@ -176,7 +176,6 @@
         class="logo-institucional"
         onerror="this.style.display='none'"
       >
-      
       <h1>CONVERSOR DE DIVISA</h1>
     </header>
 
@@ -210,6 +209,7 @@
 
     const TASA_INICIAL = "919,8227";
     const CLAVE_TASA = "fenacotecv_1942_tasa_bcv";
+    const INTERVALO_BCV_MS = 15 * 60 * 1000;
 
     function parsearNumero(valor) {
       if (!valor) return 0;
@@ -265,6 +265,61 @@
       }, 2500);
     });
 
+    function formatearTasaInput(valorNum) {
+      return Number(valorNum).toFixed(4).replace(".", ",");
+    }
+
+    async function obtenerTasaBCV() {
+      const fuentes = [
+        async () => {
+          const res = await fetch("https://ve.dolarapi.com/v1/dolares/oficial", { cache: "no-store" });
+          if (!res.ok) throw new Error("Error DolarApi");
+          const data = await res.json();
+          return Number(data.promedio ?? data.venta ?? data.compra);
+        },
+        async () => {
+          const res = await fetch("https://pydolarve.org/api/v1/dollar?page=bcv", { cache: "no-store" });
+          if (!res.ok) throw new Error("Error PyDolar");
+          const data = await res.json();
+          const usd = data?.monitors?.usd;
+          return Number(usd?.price ?? usd?.last_price);
+        }
+      ];
+
+      for (const consultar of fuentes) {
+        try {
+          const tasa = await consultar();
+          if (Number.isFinite(tasa) && tasa > 0) {
+            return tasa;
+          }
+        } catch (err) {}
+      }
+      return null;
+    }
+
+    async function sincronizarTasaBCV(silencioso = true) {
+      const nuevaTasa = await obtenerTasaBCV();
+      if (!nuevaTasa) {
+        if (!silencioso) {
+          estado.textContent = "Sin conexión; se mantiene la tasa actual.";
+          setTimeout(() => {
+            estado.textContent = "";
+          }, 3000);
+        }
+        return;
+      }
+
+      const tasaActual = parsearNumero(inputTasa.value);
+      if (Math.abs(nuevaTasa - tasaActual) >= 0.0001) {
+        inputTasa.value = formatearTasaInput(nuevaTasa);
+        actualizar();
+        estado.textContent = "Tasa BCV actualizada: " + formatoVe(nuevaTasa, 4);
+        setTimeout(() => {
+          estado.textContent = "";
+        }, 3500);
+      }
+    }
+
     inputMonto.addEventListener("input", actualizar);
     inputTasa.addEventListener("input", actualizar);
 
@@ -275,6 +330,15 @@
 
     inputTasa.value = tasaCargada.trim() ? tasaCargada : TASA_INICIAL;
     actualizar();
+
+    sincronizarTasaBCV(true);
+    setInterval(() => sincronizarTasaBCV(true), INTERVALO_BCV_MS);
+
+    document.addEventListener("visibilitychange", () => {
+      if (document.visibilityState === "visible") {
+        sincronizarTasaBCV(true);
+      }
+    });
   </script>
 </body>
 </html>
