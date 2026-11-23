@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CONVERSOR DIVISA FENACOTECV-1942</title>
-  <meta property="og:title" content="CONVERSOR DIVISA FENACOTECV-1942">
+  <title>CONVERSOR DE DIVISA FENACOTECV-1942</title>
+  <meta property="og:title" content="CONVERSOR DE DIVISA FENACOTECV-1942">
   <style>
     :root {
       --bg: #f4f5f7;
@@ -41,25 +41,29 @@
       border: 1px solid var(--border);
       border-top: 4px solid var(--accent);
       border-radius: 10px;
-      padding: 24px;
+      padding: 26px 24px;
       box-shadow: 0 8px 24px rgba(17, 19, 24, 0.08);
     }
 
     .encabezado {
       display: flex;
-      flex-direction: column;
       align-items: center;
-      text-align: center;
+      gap: 14px;
       margin-bottom: 20px;
       border-bottom: 1px solid var(--border);
-      padding-bottom: 16px;
+      padding-bottom: 14px;
     }
 
-    .logo-svg {
-      width: 112px;
-      height: 112px;
-      margin-bottom: 10px;
-      display: block;
+    .logo-institucional {
+      width: 54px;
+      height: 54px;
+      object-fit: contain;
+      flex-shrink: 0;
+      border-radius: 6px;
+    }
+
+    .titulos-box {
+      min-width: 0;
     }
 
     .subtitulo {
@@ -169,123 +173,16 @@
 <body>
   <main class="tarjeta">
     <header class="encabezado">
-      <svg class="logo-svg" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Emblema FENACOTECV 1942">
-        <defs>
-          <path id="arcOuterTop" d="M 52,205 A 148,148 0 1,1 348,205" />
-          <path id="arcInnerTop" d="M 76,205 A 124,124 0 1,1 324,205" />
-          <path id="arcSubTop" d="M 102,202 A 98,98 0 1,1 298,202" />
-          <path id="arcBottomMotto" d="M 88,205 A 112,112 0 0,0 312,205" />
-        </defs>
-
-        <!-- Textos circulares superiores -->
-        <text font-family="Arial Narrow, Roboto Condensed, Arial, sans-serif" font-weight="800" font-size="18.5" fill="#111111" letter-spacing="0.4">
-          <textPath href="#arcOuterTop" startOffset="50%" text-anchor="middle">FEDERACIÓN NACIONAL DE COLEGIOS DE CONTADORES</textPath>
-        </text>
-        <text font-family="Arial Narrow, Roboto Condensed, Arial, sans-serif" font-weight="800" font-size="17" fill="#111111" letter-spacing="0.4">
-          <textPath href="#arcInnerTop" startOffset="50%" text-anchor="middle">Y TÉCNICOS EN CONTABILIDAD DE VENEZUELA</textPath>
-        </text>
-        <text font-family="Arial, sans-serif" font-weight="700" font-size="12.5" fill="#111111" letter-spacing="0.6">
-          <textPath href="#arcSubTop" startOffset="50%" text-anchor="middle">CARACAS - FENACOTECV</textPath>
-        </text>
-
-        <!-- Anillo interior punteado -->
-        <circle cx="200" cy="202" r="82" fill="none" stroke="#111111" stroke-width="3.2" stroke-dasharray="2.4 5.2" />
-
-        <!-- Lema inferior -->
-        <text font-family="Georgia, Times New Roman, serif" font-weight="700" font-size="15.5" fill="#111111" letter-spacing="0.8">
-          <textPath href="#arcBottomMotto" startOffset="50%" text-anchor="middle">PALMAM QUI MERUIT FERAT</textPath>
-        </text>
-
-        <!-- Ramas de laurel -->
-        <g fill="#2e8b3c" stroke="#1b5e20" stroke-width="0.9">
-          <!-- Rama izquierda -->
-          <path d="M 185,352 C 110,335 66,275 68,206" fill="none" stroke="#2e8b3c" stroke-width="2.6" stroke-linecap="round"/>
-          <path d="M 176,349 C 164,342 156,336 152,329 C 162,332 170,339 176,349 Z"/>
-          <path d="M 173,349 C 163,353 152,354 143,350 C 153,347 164,347 173,349 Z"/>
-          <path d="M 152,337 C 141,328 134,320 132,311 C 141,316 148,325 152,337 Z"/>
-          <path d="M 149,338 C 138,341 127,340 119,334 C 129,333 140,334 149,338 Z"/>
-          <path d="M 130,320 C 121,309 116,299 116,290 C 123,297 128,308 130,320 Z"/>
-          <path d="M 127,321 C 116,322 105,319 98,312 C 108,312 119,315 127,321 Z"/>
-          <path d="M 111,299 C 104,286 101,275 103,266 C 109,274 112,286 111,299 Z"/>
-          <path d="M 108,300 C 97,298 87,294 81,285 C 91,287 101,292 108,300 Z"/>
-          <path d="M 95,274 C 91,260 90,248 94,239 C 98,249 98,261 95,274 Z"/>
-          <path d="M 92,275 C 82,271 74,264 70,255 C 79,259 87,266 92,275 Z"/>
-          <path d="M 83,247 C 81,233 83,221 88,213 C 90,223 88,235 83,247 Z"/>
-          <path d="M 80,248 C 72,242 66,233 64,223 C 72,229 77,238 80,248 Z"/>
-          <path d="M 74,220 C 71,210 68,200 68,192 C 74,200 76,210 74,220 Z"/>
-
-          <!-- Rama derecha -->
-          <path d="M 215,352 C 290,335 334,275 332,206" fill="none" stroke="#2e8b3c" stroke-width="2.6" stroke-linecap="round"/>
-          <path d="M 224,349 C 236,342 244,336 248,329 C 238,332 230,339 224,349 Z"/>
-          <path d="M 227,349 C 237,353 248,354 257,350 C 247,347 236,347 227,349 Z"/>
-          <path d="M 248,337 C 259,328 266,320 268,311 C 259,316 252,325 248,337 Z"/>
-          <path d="M 251,338 C 262,341 273,340 281,334 C 271,333 260,334 251,338 Z"/>
-          <path d="M 270,320 C 279,309 284,299 284,290 C 277,297 272,308 270,320 Z"/>
-          <path d="M 273,321 C 284,322 295,319 302,312 C 292,312 281,315 273,321 Z"/>
-          <path d="M 289,299 C 296,286 299,275 297,266 C 291,274 288,286 289,299 Z"/>
-          <path d="M 292,300 C 303,298 313,294 319,285 C 309,287 299,292 292,300 Z"/>
-          <path d="M 305,274 C 309,260 310,248 306,239 C 302,249 302,261 305,274 Z"/>
-          <path d="M 308,275 C 318,271 326,264 330,255 C 321,259 313,266 308,275 Z"/>
-          <path d="M 317,247 C 319,233 317,221 312,213 C 310,223 312,235 317,247 Z"/>
-          <path d="M 320,248 C 328,242 334,233 336,223 C 328,229 323,238 320,248 Z"/>
-          <path d="M 326,220 C 329,210 332,200 332,192 C 326,200 324,210 326,220 Z"/>
-        </g>
-
-        <!-- Tallos cruzados inferiores y año 1942 -->
-        <line x1="184" y1="352" x2="162" y2="372" stroke="#2e8b3c" stroke-width="2.5" stroke-linecap="round"/>
-        <line x1="216" y1="352" x2="238" y2="372" stroke="#2e8b3c" stroke-width="2.5" stroke-linecap="round"/>
-        <text x="200" y="376" font-family="Arial Narrow, Arial, sans-serif" font-weight="900" font-size="25" fill="#111111" text-anchor="middle">1942</text>
-
-        <!-- Libros apilados en el centro -->
-        <g stroke="#111111" stroke-width="1.8" stroke-linejoin="round">
-          <!-- Libro superior azul -->
-          <path d="M 173,204 L 228,204 L 228,214 L 173,214 C 168,214 168,204 173,204 Z" fill="#1565c0"/>
-          <line x1="175" y1="209" x2="226" y2="209" stroke="#ffffff" stroke-width="1.2"/>
-          <!-- Libro medio blanco -->
-          <path d="M 175,214 L 231,214 L 231,224 L 175,224 C 170,224 170,214 175,214 Z" fill="#ffffff"/>
-          <line x1="177" y1="219" x2="229" y2="219" stroke="#111111" stroke-width="1"/>
-          <!-- Libro inferior blanco -->
-          <path d="M 173,224 L 229,224 L 229,234 L 173,234 C 168,234 168,224 173,224 Z" fill="#ffffff"/>
-          <line x1="175" y1="229" x2="227" y2="229" stroke="#111111" stroke-width="1"/>
-        </g>
-
-        <!-- Balanza dorada -->
-        <g stroke="#111111" stroke-width="1.6" stroke-linejoin="round">
-          <!-- Base y columna -->
-          <rect x="182" y="198" width="36" height="6" rx="1.5" fill="#ffd600"/>
-          <path d="M 189,198 L 195,152 L 205,152 L 211,198 Z" fill="#ffd600"/>
-          <ellipse cx="200" cy="176" rx="7" ry="3.5" fill="#ffd600"/>
-          <circle cx="200" cy="144" r="4.5" fill="#ffd600"/>
-          <!-- Brazo horizontal -->
-          <path d="M 150,150 Q 200,141 250,150 Q 200,153 150,150 Z" fill="#ffd600"/>
-          <!-- Cuerdas y platillo izquierdo -->
-          <line x1="154" y1="150" x2="140" y2="188" stroke="#111111" stroke-width="1.4"/>
-          <line x1="154" y1="150" x2="168" y2="188" stroke="#111111" stroke-width="1.4"/>
-          <path d="M 138,188 L 170,188 C 168,196 140,196 138,188 Z" fill="#ffd600"/>
-          <!-- Cuerdas y platillo derecho -->
-          <line x1="246" y1="150" x2="232" y2="188" stroke="#111111" stroke-width="1.4"/>
-          <line x1="246" y1="150" x2="260" y2="188" stroke="#111111" stroke-width="1.4"/>
-          <path d="M 230,188 L 262,188 C 260,196 232,196 230,188 Z" fill="#ffd600"/>
-        </g>
-
-        <!-- Tintero y pluma a la izquierda -->
-        <g stroke="#111111" stroke-width="1.5" stroke-linejoin="round">
-          <path d="M 145,216 L 161,216 L 164,228 L 142,228 Z" fill="#1565c0"/>
-          <rect x="148" y="212" width="10" height="4" fill="#90caf9"/>
-          <!-- Pluma -->
-          <path d="M 153,214 C 141,203 135,190 137,178 C 147,183 154,196 154,213 Z" fill="#81d4fa"/>
-          <line x1="138" y1="180" x2="153" y2="215" stroke="#111111" stroke-width="1.3"/>
-          <line x1="139" y1="189" x2="147" y2="191" stroke="#111111" stroke-width="0.9"/>
-          <line x1="141" y1="196" x2="150" y2="198" stroke="#111111" stroke-width="0.9"/>
-          <line x1="144" y1="203" x2="152" y2="205" stroke="#111111" stroke-width="0.9"/>
-        </g>
-
-        <!-- Siglas centrales CNTC -->
-        <text x="200" y="260" font-family="Arial, sans-serif" font-weight="900" font-size="21" fill="#111111" text-anchor="middle" letter-spacing="1">CNTC</text>
-      </svg>
-
-      <div class="subtitulo">Calculadora de Referencia</div>
-      <h1>CONVERSOR DIVISA FENACOTECV-1942</h1>
+      <img
+        src="logo.png"
+        alt="Logo FENACOTECV-1942"
+        class="logo-institucional"
+        onerror="this.style.display='none'"
+      >
+      <div class="titulos-box">
+        <div class="subtitulo">Calculadora de Referencia</div>
+        <h1>CONVERSOR DE DIVISA FENACOTECV-1942</h1>
+      </div>
     </header>
 
     <section class="campos">
