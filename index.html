@@ -210,6 +210,10 @@
     const TASA_INICIAL = "919,8227";
     const CLAVE_TASA = "fenacotecv_1942_tasa_bcv";
     const INTERVALO_BCV_MS = 15 * 60 * 1000;
+    const ESPERA_TRAS_CALCULO_MS = 1800; // Vuelve a la tasa BCV tras mostrar el resultado
+
+    let usoManualPendiente = false;
+    let temporizadorRetorno = null;
 
     function parsearNumero(valor) {
       if (!valor) return 0;
@@ -239,6 +243,15 @@
       } catch (e) {}
     }
 
+    function programarRetornoABcv() {
+      if (!usoManualPendiente) return;
+      clearTimeout(temporizadorRetorno);
+      temporizadorRetorno = setTimeout(() => {
+        usoManualPendiente = false;
+        sincronizarTasaBCV(true);
+      }, ESPERA_TRAS_CALCULO_MS);
+    }
+
     function textoWhatsApp() {
       const monto = parsearNumero(inputMonto.value);
       const tasa = parsearNumero(inputTasa.value);
@@ -263,6 +276,12 @@
       setTimeout(() => {
         estado.textContent = "";
       }, 2500);
+
+      if (usoManualPendiente) {
+        clearTimeout(temporizadorRetorno);
+        usoManualPendiente = false;
+        sincronizarTasaBCV(true);
+      }
     });
 
     function formatearTasaInput(valorNum) {
@@ -320,8 +339,16 @@
       }
     }
 
-    inputMonto.addEventListener("input", actualizar);
-    inputTasa.addEventListener("input", actualizar);
+    inputMonto.addEventListener("input", () => {
+      actualizar();
+      programarRetornoABcv();
+    });
+
+    inputTasa.addEventListener("input", () => {
+      usoManualPendiente = true;
+      actualizar();
+      programarRetornoABcv();
+    });
 
     let tasaCargada = "";
     try {
