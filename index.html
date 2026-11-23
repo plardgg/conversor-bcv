@@ -288,11 +288,11 @@
       return Number(valorNum).toFixed(4).replace(".", ",");
     }
 
-    // Consulta la tasa oficial del BCV (sin promedios de mercado paralelo)
     async function obtenerTasaOficialBCV() {
+      const bust = Date.now();
       const fuentesOficiales = [
         async () => {
-          const res = await fetch("https://ve.dolarapi.com/v1/dolares/oficial", { cache: "no-store" });
+          const res = await fetch(`https://ve.dolarapi.com/v1/dolares/oficial?t=${bust}`, { cache: "no-store" });
           if (!res.ok) throw new Error("Error DolarApi oficial");
           const data = await res.json();
           if (data?.fuente && String(data.fuente).toLowerCase() !== "oficial") {
@@ -301,7 +301,7 @@
           return Number(data.promedio);
         },
         async () => {
-          const res = await fetch("https://pydolarve.org/api/v1/dollar?page=bcv", { cache: "no-store" });
+          const res = await fetch(`https://pydolarve.org/api/v1/dollar?page=bcv&t=${bust}`, { cache: "no-store" });
           if (!res.ok) throw new Error("Error PyDolar BCV");
           const data = await res.json();
           return Number(data?.monitors?.usd?.price);
